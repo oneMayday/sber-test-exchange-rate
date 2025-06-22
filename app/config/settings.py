@@ -1,20 +1,16 @@
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
-class AppConfig(BaseModel):
-    host: str = "0.0.0.0"
-    port: int = 8000
-    reload: bool = False
-    title: str = ""
-    debug: bool = False
-
-
-class ApiConfig(BaseModel):
-    prefix: str = '/api'
+from .app import (
+    AppConfig,
+    ApiConfig
+)
+from .database import (
+    DatabaseConfig
+)
 
 
 class Settings(BaseSettings):
+    """Класс настроек проекта."""
     model_config = SettingsConfigDict(
         env_file='.env',
         env_nested_delimiter="__",
@@ -22,6 +18,7 @@ class Settings(BaseSettings):
 
     app: AppConfig = AppConfig()
     api: ApiConfig = ApiConfig()
+    db: DatabaseConfig = DatabaseConfig()
 
 
 settings = Settings()
