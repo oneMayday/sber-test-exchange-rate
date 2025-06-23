@@ -1,8 +1,6 @@
 from fastapi import APIRouter
 
+from app.currencies.routers import router as currency_router
+
 api_router = APIRouter()
-
-
-@api_router.get("/")
-def get_main_page():
-    return dict(test='True')
+api_router.include_router(currency_router)

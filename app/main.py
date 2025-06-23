@@ -1,16 +1,17 @@
 from contextlib import asynccontextmanager
 
-import uvicorn
 from fastapi import FastAPI
 
-from app.config.settings import settings
-from app.config.database import BaseModel, DatabaseSessionMaker
-from app.routers import api_router
+from .handlers import setup_exception_handlers
+from .config.settings import settings
+from .routers import api_router
+from .models import BaseModel
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    session_maker = DatabaseSessionMaker(db_config=settings.db)
+    from .config.database.session_maker import session_maker
+
     async with session_maker.engine.begin() as conn:
         await conn.run_sync(BaseModel.metadata.create_all)
     yield
@@ -20,10 +21,13 @@ app = FastAPI(
     debug=settings.app.debug,
     lifespan=lifespan
 )
-app.include_router(api_router)
 
+app.include_router(api_router)
+setup_exception_handlers(app)
 
 if __name__ == "__main__":
+    import uvicorn
+
     uvicorn.run(
         "main:app",
         host=settings.app.host,
