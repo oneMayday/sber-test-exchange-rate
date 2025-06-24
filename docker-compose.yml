@@ -9,3 +9,5 @@ services:
     ports:
       - "8000:8000"
     command: bash -c "./entrypoint_api.sh"
+    volumes:
+      - /db_data/db.sqlite3:/db.sqlite3
