@@ -13,10 +13,10 @@ from .exceptions import CentraBankProviderResponseException
 
 
 class CentralBankRFProvider(FinancialDataBaseProvider):
+    """Провайдер ЦБ РФ."""
+
     provider_name = "ЦБ РФ"
     provider_url = "https://www.cbr-xml-daily.ru"
-
-    """Провайдер ЦБ РФ."""
 
     async def get_currencies_exchange_rates(
         self,

@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.database.session_maker import session_maker
 from .schemas import (
-    DeleteCurrenciesExchangeRatesResponse,
+    ExchangeRateDeleteByCodeResponse,
     ExchangeRateGetAllDataInput,
     ExchangeRateGetAllDataResponse,
     SaveCurrenciesExchangeRatesRequestInput,
@@ -64,7 +64,6 @@ async def save_currency_exchange_rates(
 async def delete_currency_exchange_rates_by_code(
     session: AsyncSession = Depends(session_maker.session_dependency),
     currency_code: str = Depends(validate_currency_code)
-):
+) -> ExchangeRateDeleteByCodeResponse:
     """Удаление всех записей по коду валюты"""
-    res = await ExchangeRatesDeleteByCodeUseCase(session=session).execute(currency_code=currency_code)
-    return {"message": f"All records for {currency_code} deleted successfully"}
+    return await ExchangeRatesDeleteByCodeUseCase(session=session).execute(currency_code=currency_code)

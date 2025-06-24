@@ -2,4 +2,4 @@ from ..base_provider.base_exceptions import FinancialDataProviderResponseExcepti
 
 
 class CentraBankProviderResponseException(FinancialDataProviderResponseException):
-    default_message = "Ошибка при получении данных от ЦБ РФ"
+    default_message = "Error when receiving data from the Central Bank of the RF"

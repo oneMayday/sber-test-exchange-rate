@@ -3,11 +3,11 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
-
 from app.utils import PaginationInput, PaginationResponse
 
 
-class DeleteCurrenciesExchangeRatesResponse(BaseModel):
+class ExchangeRateDeleteByCodeResponse(BaseModel):
+
     message: str
 
 

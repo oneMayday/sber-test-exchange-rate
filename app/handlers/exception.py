@@ -4,6 +4,9 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from starlette import status
 
+from app.currencies.exceptions import (
+    CurrencyCodeValidationException,
+)
 from app.integrations import (
     FinancialDataProviderResponseException
 )
@@ -24,6 +27,15 @@ def setup_exception_handlers(app: FastAPI) -> None:
         )
     )
     app.add_exception_handler(
+        CurrencyCodeValidationException,
+        lambda request, exc: ORJSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST, content={
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "detail": exc.message
+            }
+        )
+    )
+    app.add_exception_handler(
         BaseCustomException,
         lambda request, exc: ORJSONResponse(
             status_code=status.HTTP_502_BAD_GATEWAY, content={
@@ -37,7 +49,7 @@ def setup_exception_handlers(app: FastAPI) -> None:
         lambda request, exc: ORJSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={
                 "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR,
-                "detail": "Внутренняя ошибка сервера"
+                "detail": "Internal server error"
             }
         )
     )
