@@ -2,15 +2,15 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from .handlers import setup_exception_handlers
-from .config.settings import settings
-from .routers import api_router
-from .models import BaseModel
+from app.handlers import setup_exception_handlers
+from app.config.settings import settings
+from app.routers import api_router
+from app.models import BaseModel
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    from .config.database.session_maker import session_maker
+    from app.config.database.session_maker import session_maker
 
     async with session_maker.engine.begin() as conn:
         await conn.run_sync(BaseModel.metadata.create_all)
