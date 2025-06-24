@@ -7,6 +7,7 @@ from ..schemas import ExchangeRateDeleteByCodeResponse
 
 
 class ExchangeRatesDeleteByCodeUseCase:
+    """Удаление всех записей о курсах валют, по коду валюты."""
     def __init__(
         self,
         session: AsyncSession,

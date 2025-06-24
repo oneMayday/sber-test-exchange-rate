@@ -9,6 +9,7 @@ from ..schemas import ExchangeRateGetAllDataResponse, CurrencyExchangeRate
 
 
 class ExchangeRatesGetAllDataUseCase:
+    """Получение всех данных о курсах валют, с пагинацией."""
     def __init__(
         self,
         session: AsyncSession,

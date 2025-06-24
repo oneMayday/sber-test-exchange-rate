@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+from pydantic import ValidationError
 from starlette import status
 
 from app.currencies.exceptions import (

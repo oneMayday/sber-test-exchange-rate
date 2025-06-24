@@ -20,16 +20,20 @@ from ..model_services import (
     ExchangeRateModelService,
 )
 from ..schemas import (
-    CurrencysExchangeRatesSaveRequestInput,
+    CurrencyExchangeRatesSaveRequestInput,
     CurrencyExchangeRatesSaveResponse,
 )
 
 
 class CurrenciesExchangeRatesSaveUseCase:
+    """
+    Запрос к поставщику финансовых данных для получения списка валют и курсов обмена.
+    В качестве аргумента принимает дата, введенная пользователем в формате YYYY-MM-DD.
+    """
     def __init__(
         self,
         session: AsyncSession,
-        request_input: CurrencysExchangeRatesSaveRequestInput,
+        request_input: CurrencyExchangeRatesSaveRequestInput,
         fin_data_provider: FinancialDataBaseProvider = None,
     ):
         self.session = session

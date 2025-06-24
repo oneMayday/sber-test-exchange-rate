@@ -6,6 +6,7 @@ from ..model_services import CurrencyModelService
 
 
 class CurrencyGetUniqueCodesUseCase:
+    """Получение списка уникальных кодов валют."""
     def __init__(
         self,
         session: AsyncSession,

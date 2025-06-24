@@ -1,7 +1,7 @@
-from datetime import date
+from datetime import date as _date
 from decimal import Decimal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.utils import PaginationInput, PaginationResponse
 
@@ -10,11 +10,11 @@ class CurrencyExchangeRate(BaseModel):
     id: int
     code: str
     rate: Decimal
-    date: date
+    date: _date
 
 
-class CurrencysExchangeRatesSaveRequestInput(BaseModel):
-    date: date
+class CurrencyExchangeRatesSaveRequestInput(BaseModel):
+    date: _date = Field(examples=["2025-06-24"])
 
 
 class CurrencyExchangeRatesSaveResponse(BaseModel):
