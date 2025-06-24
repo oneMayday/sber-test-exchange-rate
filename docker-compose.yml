@@ -11,6 +11,5 @@ services:
     command: bash -c "./entrypoint_api.sh"
     env_file:
       - .env
-      - template.env
     volumes:
       - /db_data/db.sqlite3:/db.sqlite3
