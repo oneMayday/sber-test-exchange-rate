@@ -6,17 +6,27 @@ from starlette import status
 
 from app.currencies.exceptions import (
     CurrencyCodeValidationException,
+    ExchangeRatesAlreadyExistsException
 )
 from app.integrations import (
     FinancialDataProviderResponseException
 )
-from app.utils import BaseCustomException
+from app.utils.exceptions import BaseCustomException
 
 
 logger = logging.getLogger(__name__)
 
 
 def setup_exception_handlers(app: FastAPI) -> None:
+    app.add_exception_handler(
+        ExchangeRatesAlreadyExistsException,
+        lambda request, exc: ORJSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST, content={
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "detail": exc.message
+            }
+        )
+    )
     app.add_exception_handler(
         FinancialDataProviderResponseException,
         lambda request, exc: ORJSONResponse(

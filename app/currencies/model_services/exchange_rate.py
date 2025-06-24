@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import select, delete, func
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,6 +24,11 @@ class ExchangeRateModelService:
 
     async def get_list(self):
         stmt = select(self.model)
+        result: Result = await self.session.execute(stmt)
+        return list(result.scalars().all())
+
+    async def get_list_by_target_date(self, target_date: date):
+        stmt = select(self.model).filter(ExchangeRate.date == target_date)
         result: Result = await self.session.execute(stmt)
         return list(result.scalars().all())
 

@@ -12,7 +12,6 @@ class ExchangeRatesDeleteByCodeUseCase:
         self.session = session
         self.exchange_rate_model_service = ExchangeRateModelService(self.session)
 
-    async def execute(self, currency_code: str):
+    async def execute(self, currency_code: str) -> ExchangeRateDeleteByCodeResponse:
         await self.exchange_rate_model_service.delete_by_code(currency_code)
-        return dict(message=f"All records for {currency_code.upper()} deleted successfully")
-
+        return ExchangeRateDeleteByCodeResponse(message=f"All records for {currency_code.upper()} deleted successfully")

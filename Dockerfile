@@ -15,4 +15,6 @@ COPY . .
 
 ENV PYTHONPATH /application
 
+RUN chmod +x entrypoint_api.sh
+
 CMD ["bash", "entrypoint_api.sh"]

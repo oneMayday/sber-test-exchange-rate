@@ -6,24 +6,23 @@ from pydantic import BaseModel
 from app.utils import PaginationInput, PaginationResponse
 
 
-class ExchangeRateDeleteByCodeResponse(BaseModel):
-
-    message: str
-
-
-class SaveCurrenciesExchangeRatesRequestInput(BaseModel):
-    date: date
-
-
-class SaveCurrenciesExchangeRatesResponse(BaseModel):
-    message: str
-
-
 class CurrencyExchangeRate(BaseModel):
     id: int
     code: str
     rate: Decimal
     date: date
+
+
+class CurrencysExchangeRatesSaveRequestInput(BaseModel):
+    date: date
+
+
+class CurrencyExchangeRatesSaveResponse(BaseModel):
+    message: str = "Currency rates saved successfully"
+
+
+class ExchangeRateDeleteByCodeResponse(BaseModel):
+    message: str
 
 
 class ExchangeRateGetAllDataInput(PaginationInput):
@@ -32,3 +31,5 @@ class ExchangeRateGetAllDataInput(PaginationInput):
 
 class ExchangeRateGetAllDataResponse(PaginationResponse):
     items: list[CurrencyExchangeRate]
+
+

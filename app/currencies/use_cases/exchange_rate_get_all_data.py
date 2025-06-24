@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import NoReturn
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,9 +16,8 @@ class ExchangeRatesGetAllDataUseCase:
         self.session = session
         self.exchange_rate_model_service = ExchangeRateModelService(self.session)
 
-    async def execute(self, page: int, per_page: int) -> ExchangeRateGetAllDataResponse:
+    async def execute(self, page: int, per_page: int) -> ExchangeRateGetAllDataResponse | NoReturn:
         result = await self.exchange_rate_model_service.get_all_data(
             page=page,
             per_page=per_page
         )
-        return result

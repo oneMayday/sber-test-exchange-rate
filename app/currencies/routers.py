@@ -8,14 +8,14 @@ from .schemas import (
     ExchangeRateDeleteByCodeResponse,
     ExchangeRateGetAllDataInput,
     ExchangeRateGetAllDataResponse,
-    SaveCurrenciesExchangeRatesRequestInput,
-    SaveCurrenciesExchangeRatesResponse
+    CurrencysExchangeRatesSaveRequestInput,
+    CurrencyExchangeRatesSaveResponse
 )
 from .use_cases import (
     ExchangeRatesGetAllDataUseCase,
     ExchangeRatesDeleteByCodeUseCase,
     CurrencyGetUniqueCodesUseCase,
-    SaveCurrenciesExchangeRatesUseCase
+    CurrenciesExchangeRatesSaveUseCase
 )
 
 from .utils import validate_currency_code
@@ -29,11 +29,10 @@ async def get_currency_exchange_rates_all_data(
     session: AsyncSession = Depends(session_maker.session_dependency),
 ):
     """Получение всех данных о курсах валют"""
-    result = await ExchangeRatesGetAllDataUseCase(session=session).execute(
+    return await ExchangeRatesGetAllDataUseCase(session=session).execute(
         per_page=pagination_input.per_page,
         page=pagination_input.page
     )
-    return result
 
 
 @router.get('/unique-currency-codes', response_model=list[str | None])
@@ -41,26 +40,25 @@ async def get_unique_currency_codes(
     session: AsyncSession = Depends(session_maker.session_dependency)
 ):
     """Получение списка уникальных кодов валют."""
-    result = await CurrencyGetUniqueCodesUseCase(session=session).execute()
-    return result
+    return await CurrencyGetUniqueCodesUseCase(session=session).execute()
 
 
-@router.post('/currencies', response_model=bool)
+@router.post('/currencies', response_model=CurrencyExchangeRatesSaveResponse)
 async def save_currency_exchange_rates(
-    request_params: Annotated[SaveCurrenciesExchangeRatesRequestInput, Query()],
+    request_params: Annotated[CurrencysExchangeRatesSaveRequestInput, Query()],
     session: AsyncSession = Depends(session_maker.session_dependency),
 ):
     """Получение данных о курсах валют от провайдера и их сохранение"""
-    data = await SaveCurrenciesExchangeRatesUseCase(
-        session=session,
-        request_input=request_params
-    ).execute()
-    out = SaveCurrenciesExchangeRatesResponse
-    out.message = ''
-    return True
+    return await CurrenciesExchangeRatesSaveUseCase(session=session, request_input=request_params).execute()
 
 
-@router.delete('/delete-by-code/{currency_code}', response_model=dict)
+@router.delete(
+    '/delete-by-code/{currency_code}',
+    responses={
+        200: {"description": "Records successfully deleted"},
+        400: {"description": "Invalid currency code format"}
+    }
+)
 async def delete_currency_exchange_rates_by_code(
     session: AsyncSession = Depends(session_maker.session_dependency),
     currency_code: str = Depends(validate_currency_code)
