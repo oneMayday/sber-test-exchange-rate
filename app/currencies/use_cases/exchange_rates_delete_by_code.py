@@ -1,3 +1,5 @@
+from typing import NoReturn
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..model_services import ExchangeRateModelService
@@ -12,6 +14,6 @@ class ExchangeRatesDeleteByCodeUseCase:
         self.session = session
         self.exchange_rate_model_service = ExchangeRateModelService(self.session)
 
-    async def execute(self, currency_code: str) -> ExchangeRateDeleteByCodeResponse:
+    async def execute(self, currency_code: str) -> ExchangeRateDeleteByCodeResponse | NoReturn:
         await self.exchange_rate_model_service.delete_by_code(currency_code)
         return ExchangeRateDeleteByCodeResponse(message=f"All records for {currency_code.upper()} deleted successfully")

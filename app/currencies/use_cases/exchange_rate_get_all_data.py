@@ -17,7 +17,7 @@ class ExchangeRatesGetAllDataUseCase:
         self.exchange_rate_model_service = ExchangeRateModelService(self.session)
 
     async def execute(self, page: int, per_page: int) -> ExchangeRateGetAllDataResponse | NoReturn:
-        result = await self.exchange_rate_model_service.get_all_data(
+        return await self.exchange_rate_model_service.get_all_data(
             page=page,
             per_page=per_page
         )
