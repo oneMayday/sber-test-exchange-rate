@@ -22,7 +22,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router, prefix="/api")
 setup_exception_handlers(app)
 
 if __name__ == "__main__":
